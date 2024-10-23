@@ -2,10 +2,10 @@ package com.yieldstreet.takehome.user_accreditation.service;
 
 import java.util.UUID;
 
-import com.yieldstreet.takehome.user_accreditation.api.dto.CreateAccreditationRequestDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationsForUserResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.CreateAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationResponseDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
 
 public interface AccreditationService {
     AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request);    
