@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationStatus;
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationType;
@@ -12,6 +13,7 @@ import com.yieldstreet.takehome.user_accreditation.enums.AccreditationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "accreditations")
 @Data
 public class Accreditation {
