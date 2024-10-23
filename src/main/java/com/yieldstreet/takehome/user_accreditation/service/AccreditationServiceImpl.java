@@ -12,6 +12,7 @@ import com.yieldstreet.takehome.user_accreditation.dto.request.FinalizeAccredita
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationStatusResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
+import com.yieldstreet.takehome.user_accreditation.enums.AccreditationStatus;
 import com.yieldstreet.takehome.user_accreditation.model.Accreditation;
 import com.yieldstreet.takehome.user_accreditation.model.Document;
 import com.yieldstreet.takehome.user_accreditation.repository.AccreditationRepository;
@@ -28,7 +29,12 @@ public class AccreditationServiceImpl implements AccreditationService{
     private final DocumentRepository documentRepository;
 
     @Override
-    public AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) {
+    public AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) throws Exception {
+        if(accreditationRepository.findAll().stream()
+            .anyMatch(accreditation -> accreditation.getAccreditationStatus().equals(AccreditationStatus.PENDING))){
+                throw new Exception("User already has a PENDING accreditation.");    
+        }
+
         Document document = new Document();
         
         DocumentRequestDTO documentDTO = request.getDocument();
@@ -55,6 +61,19 @@ public class AccreditationServiceImpl implements AccreditationService{
         Accreditation accreditation = accreditationRepository.findById(accreditationId)
             .orElseThrow(() -> new Exception("Accreditation not found with id: " + accreditationId));
 
+        if(accreditation.getAccreditationStatus().equals(AccreditationStatus.FAILED)){
+            throw new Exception("Accreditation is already FAILED; can not be updated further");
+        }
+
+        // Note: Clarification with business/product team may be needed if CONFIRMED accreditations should:
+        // 1. Only be allowed to transition to EXPIRED status
+        // 2. Or if other status transitions are permitted
+        // For the time being, we stick to option 1.
+        if(accreditation.getAccreditationStatus().equals(AccreditationStatus.CONFIRMED) 
+            && !request.getOutcome().equals(AccreditationStatus.EXPIRED)){
+            throw new Exception("CONFIRMED accreditation can only be EXPIRED.");
+        }
+        
         accreditation.setAccreditationStatus(request.getOutcome());
 
         Accreditation savedAccreditation = accreditationRepository.save(accreditation);

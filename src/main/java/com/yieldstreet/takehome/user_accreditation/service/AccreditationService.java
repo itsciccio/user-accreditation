@@ -8,7 +8,7 @@ import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationRes
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
 
 public interface AccreditationService {
-    AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request);    
+    AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) throws Exception; 
     AccreditationResponseDTO finalizeAccreditation(UUID accreditationId, FinalizeAccreditationRequestDTO request) throws Exception;
     AccreditationsForUserResponseDTO getAccreditationForUser(String userId) throws Exception;
 }
