@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.response;
 
 import java.util.Map;
 import java.util.UUID;
@@ -10,5 +10,5 @@ import lombok.Data;
 @Builder
 public class AccreditationsForUserResponseDTO {
     private String userId;
-    private Map<UUID, AccreditationStatusDTO> accreditationStatuses;
+    private Map<UUID, AccreditationStatusResponseDTO> accreditationStatuses;
 }

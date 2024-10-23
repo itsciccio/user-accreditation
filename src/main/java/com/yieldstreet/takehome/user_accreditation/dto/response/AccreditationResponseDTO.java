@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.response;
 
 import java.util.UUID;
 

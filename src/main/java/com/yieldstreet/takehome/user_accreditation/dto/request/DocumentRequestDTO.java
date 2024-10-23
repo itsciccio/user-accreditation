@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class DocumentDTO {
+public class DocumentRequestDTO {
     @NotBlank(message = "Document name is required")
     private String name;
     

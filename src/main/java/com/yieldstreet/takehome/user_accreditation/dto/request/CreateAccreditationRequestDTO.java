@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,5 +20,5 @@ public class CreateAccreditationRequestDTO {
     
     @Valid
     @NotNull(message = "Document is required")
-    private DocumentDTO document;
+    private DocumentRequestDTO document;
 }

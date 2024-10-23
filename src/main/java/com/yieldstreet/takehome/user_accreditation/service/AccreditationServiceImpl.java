@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.yieldstreet.takehome.user_accreditation.api.dto.CreateAccreditationRequestDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationStatusDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationsForUserResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.DocumentDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.CreateAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.DocumentRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationResponseDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationStatusResponseDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.model.Accreditation;
 import com.yieldstreet.takehome.user_accreditation.model.Document;
 import com.yieldstreet.takehome.user_accreditation.repository.AccreditationRepository;
@@ -31,7 +31,7 @@ public class AccreditationServiceImpl implements AccreditationService{
     public AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) {
         Document document = new Document();
         
-        DocumentDTO documentDTO = request.getDocument();
+        DocumentRequestDTO documentDTO = request.getDocument();
 
         document.setName(documentDTO.getName());
         document.setMimeType(documentDTO.getMimeType());
@@ -70,10 +70,10 @@ public class AccreditationServiceImpl implements AccreditationService{
 
     @Override
     public AccreditationsForUserResponseDTO getAccreditationForUser(String userId) throws Exception {
-        Map<UUID, AccreditationStatusDTO> accreditationsForUser = accreditationRepository.findByUserId(userId).stream()
+        Map<UUID, AccreditationStatusResponseDTO> accreditationsForUser = accreditationRepository.findByUserId(userId).stream()
             .collect(Collectors.toMap(
                 Accreditation::getId, 
-                accreditation -> AccreditationStatusDTO.builder()
+                accreditation -> AccreditationStatusResponseDTO.builder()
                     .accreditationType(accreditation.getAccreditationType())
                     .accreditationStatus(accreditation.getAccreditationStatus())
                     .build()
@@ -83,7 +83,7 @@ public class AccreditationServiceImpl implements AccreditationService{
         return mapToResponse(userId, accreditationsForUser);
     }
 
-    private AccreditationsForUserResponseDTO mapToResponse(String userId, Map<UUID, AccreditationStatusDTO> accreditationStatus) {
+    private AccreditationsForUserResponseDTO mapToResponse(String userId, Map<UUID, AccreditationStatusResponseDTO> accreditationStatus) {
         return AccreditationsForUserResponseDTO.builder()
             .userId(userId)
             .accreditationStatuses(accreditationStatus)

@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.request;
 
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationStatus;
 

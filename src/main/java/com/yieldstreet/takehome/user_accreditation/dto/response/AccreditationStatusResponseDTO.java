@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api.dto;
+package com.yieldstreet.takehome.user_accreditation.dto.response;
 
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationStatus;
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationType;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AccreditationStatusDTO {
+public class AccreditationStatusResponseDTO {
     private AccreditationType accreditationType;
     private AccreditationStatus accreditationStatus;
 }

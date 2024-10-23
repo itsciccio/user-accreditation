@@ -1,4 +1,4 @@
-package com.yieldstreet.takehome.user_accreditation.api;
+package com.yieldstreet.takehome.user_accreditation.controller;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yieldstreet.takehome.user_accreditation.api.dto.CreateAccreditationRequestDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.AccreditationsForUserResponseDTO;
-import com.yieldstreet.takehome.user_accreditation.api.dto.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.CreateAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.request.FinalizeAccreditationRequestDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationResponseDTO;
+import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.service.AccreditationService;
 
 import lombok.RequiredArgsConstructor;
