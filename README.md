@@ -6,13 +6,26 @@ A Spring Boot application that manages user accreditation statuses. Built as par
 Author: Francesco Borg Bonello
 
 ## Table of Contents
-1. [Architecture Overview (Question A)](#architecture-overview-question-a)
+1. [Running the Application](#running-the-application)
 
-2. [Audit Logging Implementation (Question B)](#audit-logging-implementation-overview-question-b)
+2. [Architecture Overview (Question A)](#architecture-overview-question-a)
 
-3. [Scaling Solutions (Question C)](#scaling-solutions-overview-question-c)
+3. [Audit Logging Implementation (Question B)](#audit-logging-implementation-overview-question-b)
 
-4. [Running the Application](#running-the-application)
+4. [Scaling Solutions (Question C)](#scaling-solutions-overview-question-c)
+
+## Running the Application
+
+On Linux/MacOS:
+```bash
+chmod +x run.sh  
+./run.sh      
+```
+
+On Windows:
+```bash
+run.bat      
+```
 
 ## Architecture Overview (Question A)
 
@@ -92,16 +105,3 @@ Use Redis or Spring's built-in caching to store frequently accessed accreditatio
 2. Load balancing:
 
 Deploy multiple instances of the service to distribute traffic across multiple servers. This horizontal scaling approach ensures that no single instance becomes overwhelmed.
-
-## Running the Application
-
-On Linux/MacOS:
-```bash
-chmod +x run.sh  
-./run.sh      
-```
-
-On Windows:
-```bash
-run.bat      
-```
