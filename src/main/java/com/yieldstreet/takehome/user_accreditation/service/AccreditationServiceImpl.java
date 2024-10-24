@@ -13,6 +13,10 @@ import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationRes
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationStatusResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.dto.response.AccreditationsForUserResponseDTO;
 import com.yieldstreet.takehome.user_accreditation.enums.AccreditationStatus;
+import com.yieldstreet.takehome.user_accreditation.exceptions.AccreditationNotFoundException;
+import com.yieldstreet.takehome.user_accreditation.exceptions.InvalidAccreditationStatusChangeException;
+import com.yieldstreet.takehome.user_accreditation.exceptions.FailedAccreditationStatusUpdateException;
+import com.yieldstreet.takehome.user_accreditation.exceptions.PendingAccreditationAlreadyExistsForUserException;
 import com.yieldstreet.takehome.user_accreditation.model.Accreditation;
 import com.yieldstreet.takehome.user_accreditation.model.Document;
 import com.yieldstreet.takehome.user_accreditation.repository.AccreditationRepository;
@@ -29,10 +33,10 @@ public class AccreditationServiceImpl implements AccreditationService{
     private final DocumentRepository documentRepository;
 
     @Override
-    public AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) throws Exception {
-        if(accreditationRepository.findAll().stream()
+    public AccreditationResponseDTO createAccreditation(CreateAccreditationRequestDTO request) throws PendingAccreditationAlreadyExistsForUserException {
+        if(accreditationRepository.findByUserId(request.getUserId()).stream()
             .anyMatch(accreditation -> accreditation.getAccreditationStatus().equals(AccreditationStatus.PENDING))){
-                throw new Exception("User already has a PENDING accreditation.");    
+                throw new PendingAccreditationAlreadyExistsForUserException(request.getUserId());    
         }
 
         Document document = new Document();
@@ -57,12 +61,13 @@ public class AccreditationServiceImpl implements AccreditationService{
     }
 
     @Override
-    public AccreditationResponseDTO finalizeAccreditation(UUID accreditationId, FinalizeAccreditationRequestDTO request) throws Exception {
+    public AccreditationResponseDTO finalizeAccreditation(UUID accreditationId, FinalizeAccreditationRequestDTO request) 
+        throws AccreditationNotFoundException, FailedAccreditationStatusUpdateException, InvalidAccreditationStatusChangeException {
         Accreditation accreditation = accreditationRepository.findById(accreditationId)
-            .orElseThrow(() -> new Exception("Accreditation not found with id: " + accreditationId));
+            .orElseThrow(() -> new AccreditationNotFoundException(accreditationId));
 
         if(accreditation.getAccreditationStatus().equals(AccreditationStatus.FAILED)){
-            throw new Exception("Accreditation is already FAILED; can not be updated further");
+            throw new FailedAccreditationStatusUpdateException();
         }
 
         // Note: Clarification with business/product team may be needed if CONFIRMED accreditations should:
@@ -71,7 +76,7 @@ public class AccreditationServiceImpl implements AccreditationService{
         // For the time being, we stick to option 1.
         if(accreditation.getAccreditationStatus().equals(AccreditationStatus.CONFIRMED) 
             && !request.getOutcome().equals(AccreditationStatus.EXPIRED)){
-            throw new Exception("CONFIRMED accreditation can only be EXPIRED.");
+            throw new InvalidAccreditationStatusChangeException();
         }
         
         accreditation.setAccreditationStatus(request.getOutcome());
@@ -88,7 +93,7 @@ public class AccreditationServiceImpl implements AccreditationService{
     }
 
     @Override
-    public AccreditationsForUserResponseDTO getAccreditationForUser(String userId) throws Exception {
+    public AccreditationsForUserResponseDTO getAccreditationForUser(String userId) {
         Map<UUID, AccreditationStatusResponseDTO> accreditationsForUser = accreditationRepository.findByUserId(userId).stream()
             .collect(Collectors.toMap(
                 Accreditation::getId, 
