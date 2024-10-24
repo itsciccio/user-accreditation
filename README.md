@@ -81,6 +81,17 @@ Implementation considerations:
     - Consider implementing a retention policy for managing audit log growth
 - Use database transactions to ensure both the status update and audit log creation happen atomically
 
+## Scaling Solutions Overview (Question C)
+
+To handle increased traffic to the GET endpoint we can:
+
+1. Caching:
+
+Use Redis or Spring's built-in caching to store frequently accessed accreditation statuses in order to reduce database load for repeated requests. Depending on the load we can configure the cache to expire based on system resources.
+
+2. Load balancing:
+
+Deploy multiple instances of the service to distribute traffic across multiple servers. This horizontal scaling approach ensures that no single instance becomes overwhelmed.
 
 ## Running the Application
 
