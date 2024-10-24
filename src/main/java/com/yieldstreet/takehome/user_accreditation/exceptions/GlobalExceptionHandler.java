@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
             HttpStatus.NOT_FOUND.value(),
             ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(FailedAccreditationStatusUpdateException.class)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value(),
             ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidAccreditationStatusChangeException.class)
@@ -48,6 +48,6 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value(),
             ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
